@@ -13,7 +13,9 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
   //Searching anime by name field's value
   const [searchForm, setSearchForm] = useState<SearchForm>({ name: "" });
   //Screen width used to keep track of the screen size to change the width of the elements
-  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState<number>(
+    typeof window !== "undefined" ? window.innerWidth : 0
+  );
   //Search bar visibility on small screen devices as it is not always visible in navbar
   const [floatSearchIsVisible, setFloatSearchIsVisible] =
     useState<boolean>(false);
@@ -32,10 +34,12 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     //updates the width state
     function handleChange() {
-      setScreenWidth(window.innerWidth);
+      setScreenWidth(typeof window !== "undefined" ? window.innerWidth : 0);
     }
     const listener: any = window.addEventListener("resize", handleChange);
-    return () => window.removeEventListener(listener, handleChange);
+    {
+      window.removeEventListener(listener, handleChange);
+    };
   }, []);
   return (
     <>
